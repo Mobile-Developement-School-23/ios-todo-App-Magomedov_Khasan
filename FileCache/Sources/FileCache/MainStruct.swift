@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct ToDoItem {
+public struct ToDoItem {
     
     let id: String
     let text: String
