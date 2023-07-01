@@ -7,17 +7,23 @@
 
 import Foundation
 
-final class FileCache {
+public final class FileCache {
     
     private(set) var values: [String: ToDoItem] = [:]  //
     
-    // Метод для удаления
+    public init() {
+        readingFile(fromFile: "force")
+    }
+    
+    // Метод для добавления
     func addValue(value: ToDoItem) {
         values[value.id] = value
+        writeAllToFile(toFile: "force")
     }
-    // Метод для добавления
+    // Метод для удаления
     func removeValue(idValue: String) {
         values[idValue] = nil
+        writeAllToFile(toFile: "force")
     }
     // запись из файла
     func writeAllToFile(toFile: String) {

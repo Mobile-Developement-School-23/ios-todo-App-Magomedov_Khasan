@@ -6,8 +6,15 @@
 //
 
 import UIKit
+import FileCache
+
+protocol DetailsViewControllerDelegate: AnyObject {
+    func handleAdd(item: ToDoItem)
+}
 
 final class DetailsViewController: UIViewController {
+    
+    weak var delegate: DetailsViewControllerDelegate?
     
     // MARK: - Examples
     private let importanceView = ImportanceView()
@@ -29,6 +36,17 @@ final class DetailsViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = false
         return scrollView
+    }()
+    
+    private lazy var customNavigationBar: UINavigationBar = {
+        let navigationBar = UINavigationBar()
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        let saveBarButton = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(leaveButtonTapped))
+        let cancelBarButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancelButtonTapped))
+        navigationItem.leftBarButtonItem = cancelBarButton
+        navigationItem.rightBarButtonItem = saveBarButton
+        navigationBar.items = [navigationItem]
+        return navigationBar
     }()
     
     private let contentView: UIView = {
@@ -106,16 +124,13 @@ final class DetailsViewController: UIViewController {
         textView.delegate = self
         
         setupLayout()
+        
         title = "Дело"
         view.backgroundColor = UIColor(named: "backgroundColor")
         
         deadlineView.mySwitch.addTarget(self, action: #selector(mySwitchTapped), for: .valueChanged)
         
         chooseColorButton.addTarget(self, action: #selector(chooseColorButtonTapped), for: .touchDown)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(saveButtonTapped))
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Отменить", style: .done, target: nil, action: nil)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         tapGesture.cancelsTouchesInView = false
@@ -126,14 +141,36 @@ final class DetailsViewController: UIViewController {
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
+//    init(labbel: ToDoItem?) {
+//        super.init(nibName: nil, bundle: nil)
+//        
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+    
     // MARK: - Private methods
     private func setupLayout() {
+        setupCustomNavigationBarLayout()
         setupScrollViewLayout()
         setupContentViewScrollLayout()
         setupTextViewLayout()
         setupStackViewLayout()
         setupDeleteButtonLayout()
         setupDateLabelGesture()
+    }
+    
+    @objc
+    private func leaveButtonTapped() {
+        let item = ToDoItem(text: textView.text, importance: importanceFromSelectedIndex(), isAccepted: false, deadLine: datePicker.date, changeDate: nil)
+        delegate?.handleAdd(item: item)
+        dismiss(animated: true)
+    }
+    
+    @objc
+    private func cancelButtonTapped() {
+        dismiss(animated: true)
     }
     
     @objc
@@ -194,12 +231,21 @@ final class DetailsViewController: UIViewController {
         return .usual
     }
     
+    private func setupCustomNavigationBarLayout() {
+        view.addSubview(customNavigationBar)
+        
+        customNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        customNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        customNavigationBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        customNavigationBar.heightAnchor.constraint(equalToConstant: 56).isActive = true
+    }
+    
     private func setupScrollViewLayout() {
         view.addSubview(scrollView)
         
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: customNavigationBar.bottomAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
