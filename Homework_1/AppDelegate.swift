@@ -1,9 +1,6 @@
-//
 //  AppDelegate.swift
 //  Homework_1
-//
 //  Created by Хасан Магомедов on 10.06.2023.
-//
 
 import UIKit
 import CocoaLumberjack

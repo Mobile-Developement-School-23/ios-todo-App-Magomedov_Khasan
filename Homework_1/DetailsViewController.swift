@@ -16,6 +16,14 @@ final class DetailsViewController: UIViewController {
     
     weak var delegate: DetailsViewControllerDelegate?
     
+    enum Model {
+        case creation
+        case editing
+    }
+    
+    private let mode: Model
+    private let item: ToDoItem?
+    
     // MARK: - Examples
     private let importanceView = ImportanceView()
     private let deadlineView = DeadlineView()
@@ -141,6 +149,21 @@ final class DetailsViewController: UIViewController {
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
+    init(item: ToDoItem?) {
+        if item != nil {
+            mode = .editing
+        } else {
+            mode = .creation
+        }
+        self.item = item
+        super.init(nibName: nil, bundle: nil)
+        setupEdetingMode(item: item)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 //    init(labbel: ToDoItem?) {
 //        super.init(nibName: nil, bundle: nil)
 //        
@@ -161,9 +184,34 @@ final class DetailsViewController: UIViewController {
         setupDateLabelGesture()
     }
     
+    private func setupEdetingMode(item: ToDoItem?) {
+            guard let item = item else { return }
+            
+            textView.text = item.text
+            textView.textColor = .black
+            
+            switch item.importance {
+            case .important:
+                importanceView.segmentedControl.selectedSegmentIndex = 2
+            case .basic:
+                importanceView.segmentedControl.selectedSegmentIndex = 1
+            case .low:
+                importanceView.segmentedControl.selectedSegmentIndex = 0
+            }
+            
+            if let deadline = item.deadLine {
+                deadlineView.mySwitch.isOn = true
+                deadlineView.dateLabel.isHidden = false
+                deadlineView.dateLabel.text = formatter.string(from: deadline)
+            }
+            
+            deleteButton.isEnabled = true
+            deleteButton.setTitleColor(.systemRed, for: .normal)
+        }
+    
     @objc
     private func leaveButtonTapped() {
-        let item = ToDoItem(text: textView.text, importance: importanceFromSelectedIndex(), isAccepted: false, deadLine: datePicker.date, changeDate: nil)
+        let item = ToDoItem(text: textView.text, importance: importanceFromSelectedIndex(), isAccepted: false, deadLine: datePicker.date)
         delegate?.handleAdd(item: item)
         dismiss(animated: true)
     }
@@ -213,22 +261,21 @@ final class DetailsViewController: UIViewController {
             importance: importanceFromSelectedIndex(),
             isAccepted: false,
             deadLine: datePicker.date,
-            changeDate: nil,
             hexColor: choosedColor.flatMap { $0.hex }
         )
         fileCache.addValue(value: todoItem)
-        fileCache.writeAllToFile(toFile: "items")
+        //fileCache.writeAllToFile(toFile: "items")
     }
     
     private func importanceFromSelectedIndex() -> ToDoItem.Importance {
         if importanceView.segmentedControl.selectedSegmentIndex == 0 {
-            return ToDoItem.Importance.unimportant
+            return ToDoItem.Importance.low
         } else if importanceView.segmentedControl.selectedSegmentIndex == 1 {
-            return ToDoItem.Importance.usual
+            return ToDoItem.Importance.basic
         } else if importanceView.segmentedControl.selectedSegmentIndex == 2 {
             return ToDoItem.Importance.important
         }
-        return .usual
+        return .basic
     }
     
     private func setupCustomNavigationBarLayout() {

@@ -9,19 +9,19 @@ import Foundation
 
 public final class FileCache {
     
-    private(set) var values: [String: ToDoItem] = [:]  //
+    public private(set) var values: [String: ToDoItem] = [:]  //
     
     public init() {
         readingFile(fromFile: "force")
     }
     
     // Метод для добавления
-    func addValue(value: ToDoItem) {
+    public func addValue(value: ToDoItem) {
         values[value.id] = value
         writeAllToFile(toFile: "force")
     }
     // Метод для удаления
-    func removeValue(idValue: String) {
+    public func removeValue(idValue: String) {
         values[idValue] = nil
         writeAllToFile(toFile: "force")
     }
