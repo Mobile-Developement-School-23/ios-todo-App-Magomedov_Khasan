@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import FileCache
+
 
 final class NewTitleTableViewCell: UITableViewCell {
 

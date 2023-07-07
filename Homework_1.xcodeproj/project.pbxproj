@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,13 +22,15 @@
 		F990611C2A34AB5C002EC81B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F990611B2A34AB5C002EC81B /* AppDelegate.swift */; };
 		F990611E2A34AB5C002EC81B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F990611D2A34AB5C002EC81B /* SceneDelegate.swift */; };
 		F99061202A34AB5C002EC81B /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F990611F2A34AB5C002EC81B /* ListViewController.swift */; };
-		F99061232A34AB5C002EC81B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F99061212A34AB5C002EC81B /* Main.storyboard */; };
 		F99061252A34AB5F002EC81B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F99061242A34AB5F002EC81B /* Assets.xcassets */; };
 		F99061282A34AB5F002EC81B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F99061262A34AB5F002EC81B /* LaunchScreen.storyboard */; };
 		F99061332A34AB5F002EC81B /* Homework_1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99061322A34AB5F002EC81B /* Homework_1Tests.swift */; };
 		F990613E2A34AB5F002EC81B /* Homework_1UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F990613D2A34AB5F002EC81B /* Homework_1UITests.swift */; };
+		F9A1A6E92A585AF300746189 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A1A6E82A585AF300746189 /* NetworkService.swift */; };
+		F9A1A6EE2A585B2C00746189 /* DefaultNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A1A6ED2A585B2C00746189 /* DefaultNetworkService.swift */; };
 		F9AA2A7B2A42028C00D39D88 /* ImportanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AA2A7A2A42028C00D39D88 /* ImportanceView.swift */; };
 		F9AA2A802A4202A300D39D88 /* DeadlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AA2A7F2A4202A300D39D88 /* DeadlineView.swift */; };
+		F9CC1D412A5801DF00D9E183 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CC1D402A5801DF00D9E183 /* URLSession.swift */; };
 		F9D973EC2A4111A100C00CA2 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D973EB2A4111A100C00CA2 /* ListTableViewCell.swift */; };
 		F9D974022A41DC9B00C00CA2 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D974012A41DC9B00C00CA2 /* DetailsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -70,7 +72,6 @@
 		F990611B2A34AB5C002EC81B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F990611D2A34AB5C002EC81B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F990611F2A34AB5C002EC81B /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
-		F99061222A34AB5C002EC81B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F99061242A34AB5F002EC81B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F99061272A34AB5F002EC81B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F99061292A34AB5F002EC81B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -80,8 +81,11 @@
 		F99061392A34AB5F002EC81B /* Homework_1UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Homework_1UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F990613D2A34AB5F002EC81B /* Homework_1UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homework_1UITests.swift; sourceTree = "<group>"; };
 		F990613F2A34AB5F002EC81B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F9A1A6E82A585AF300746189 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		F9A1A6ED2A585B2C00746189 /* DefaultNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNetworkService.swift; sourceTree = "<group>"; };
 		F9AA2A7A2A42028C00D39D88 /* ImportanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceView.swift; sourceTree = "<group>"; };
 		F9AA2A7F2A4202A300D39D88 /* DeadlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineView.swift; sourceTree = "<group>"; };
+		F9CC1D402A5801DF00D9E183 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		F9D973EB2A4111A100C00CA2 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		F9D974012A41DC9B00C00CA2 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -174,18 +178,20 @@
 		F990611A2A34AB5C002EC81B /* Homework_1 */ = {
 			isa = PBXGroup;
 			children = (
+				F9CC1D3F2A5801BF00D9E183 /* Extensions */,
 				F953DEDD2A4666D200BE596C /* ColorPicker */,
 				F9AA2A842A42155B00D39D88 /* ListController */,
 				F990611B2A34AB5C002EC81B /* AppDelegate.swift */,
 				F990611D2A34AB5C002EC81B /* SceneDelegate.swift */,
 				F9D974012A41DC9B00C00CA2 /* DetailsViewController.swift */,
-				F99061212A34AB5C002EC81B /* Main.storyboard */,
 				F99061242A34AB5F002EC81B /* Assets.xcassets */,
 				F99061262A34AB5F002EC81B /* LaunchScreen.storyboard */,
 				F99061292A34AB5F002EC81B /* Info.plist */,
 				F9AA2A7A2A42028C00D39D88 /* ImportanceView.swift */,
 				F9AA2A7F2A4202A300D39D88 /* DeadlineView.swift */,
 				F953DEC92A45C78F00BE596C /* SeparatorView.swift */,
+				F9A1A6E82A585AF300746189 /* NetworkService.swift */,
+				F9A1A6ED2A585B2C00746189 /* DefaultNetworkService.swift */,
 			);
 			path = Homework_1;
 			sourceTree = "<group>";
@@ -220,6 +226,14 @@
 			path = ListController;
 			sourceTree = "<group>";
 		};
+		F9CC1D3F2A5801BF00D9E183 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F9CC1D402A5801DF00D9E183 /* URLSession.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -228,7 +242,6 @@
 			buildConfigurationList = F99061422A34AB5F002EC81B /* Build configuration list for PBXNativeTarget "Homework_1" */;
 			buildPhases = (
 				70FBB466B26C99B2C591439A /* [CP] Check Pods Manifest.lock */,
-				F9042B122A4FA4D800724FAA /* ShellScript */,
 				F99061142A34AB5C002EC81B /* Sources */,
 				F99061152A34AB5C002EC81B /* Frameworks */,
 				F99061162A34AB5C002EC81B /* Resources */,
@@ -337,7 +350,6 @@
 			files = (
 				F99061282A34AB5F002EC81B /* LaunchScreen.storyboard in Resources */,
 				F99061252A34AB5F002EC81B /* Assets.xcassets in Resources */,
-				F99061232A34AB5C002EC81B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,24 +436,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F9042B122A4FA4D800724FAA /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "Pods/SwiftLint/swiftlint\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -455,9 +449,12 @@
 				F9D973EC2A4111A100C00CA2 /* ListTableViewCell.swift in Sources */,
 				F953DEDF2A4666F800BE596C /* ColorPickerViewController.swift in Sources */,
 				F953DEE42A46675F00BE596C /* Color.swift in Sources */,
+				F9A1A6EE2A585B2C00746189 /* DefaultNetworkService.swift in Sources */,
 				F990611C2A34AB5C002EC81B /* AppDelegate.swift in Sources */,
 				F9AA2A7B2A42028C00D39D88 /* ImportanceView.swift in Sources */,
+				F9CC1D412A5801DF00D9E183 /* URLSession.swift in Sources */,
 				F9211DA92A4DF53D008D58A6 /* NewTitleTableViewCell.swift in Sources */,
+				F9A1A6E92A585AF300746189 /* NetworkService.swift in Sources */,
 				F9D974022A41DC9B00C00CA2 /* DetailsViewController.swift in Sources */,
 				F9211D9F2A4B0397008D58A6 /* ListHeaderView.swift in Sources */,
 				F9211DA42A4B319C008D58A6 /* ListModel.swift in Sources */,
@@ -497,14 +494,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F99061212A34AB5C002EC81B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F99061222A34AB5C002EC81B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F99061262A34AB5F002EC81B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -647,7 +636,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "khasan.Homework-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -666,7 +655,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "khasan.Homework-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

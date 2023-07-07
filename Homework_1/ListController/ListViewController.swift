@@ -8,6 +8,8 @@ import FileCache
 final class ListViewController: UIViewController {
     
     private let fileCache = FileCache()
+    private let networkService: NetworkService
+    private var revision: Int32?
     
     private var items: [ToDoItem] {
         Array(fileCache.values.values).sorted{ $0.creationDate < $1.creationDate }
@@ -33,6 +35,17 @@ final class ListViewController: UIViewController {
     }()
     
     // MARK: - Init
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Мои дела"
@@ -40,6 +53,7 @@ final class ListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         setupLayout()
+        getItems()
     }
     
     // MARK: - Private methods
@@ -55,7 +69,8 @@ final class ListViewController: UIViewController {
     
     @objc
     private func detailsButtonTapped() {
-        let vc = DetailsViewController()
+        let vc = DetailsViewController(item: nil)
+        vc.delegate = self
         present(vc, animated: true)
     }
     
@@ -74,11 +89,89 @@ final class ListViewController: UIViewController {
         detailsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         detailsButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
     }
+}
+
+extension ListViewController {
     
-//    private func handleAdd(item: ToDoItem) {
-//        fileCache.addValue(value: item)
-//        tableView.reloadData()
-//    }
+    func getItems() {
+        networkService.getItems { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let result):
+                let (revision, items) = result
+                self.revision = revision
+                
+                items.forEach {
+                    self.fileCache.addValue(value: $0)
+                }
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    func addItem(_ item: ToDoItem) {
+        guard let revision = revision else { return }
+        
+        networkService.addItem(item: item, revision: revision) { result in
+            switch result {
+            case .success:
+                print("success")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getItem(_ item: ToDoItem) {
+        networkService.getItem(id: item.id) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let result):
+                let (revision, item) = result
+                
+                self.revision = revision
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func changeItem(_ item: ToDoItem) {
+        networkService.changeItem(item: item) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let result):
+                let (revision, _) = result
+                
+                self.revision = revision
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func removeItem(id: String) {
+        networkService.removeItem(id: id) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let result):
+                let (revision, _) = result
+                
+                self.revision = revision
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 // MARK: - Extension DataSource
@@ -111,22 +204,38 @@ extension ListViewController: UITableViewDataSource {
 extension ListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailsViewController()
-        vc.delegate = self
-        present(vc, animated: true)
+        if indexPath.row == fileCache.values.count {
+            let vc = DetailsViewController(item: nil)
+            vc.modalPresentationStyle = .popover
+            vc.delegate = self
+            present(vc, animated: true)
+        } else {
+            let item = items[indexPath.row]
+            let vc = DetailsViewController(item: item)
+            vc.modalPresentationStyle = .popover
+            vc.delegate = self
+            present(vc, animated: true)
+            
+            getItem(item)
+        }
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
             self.fileCache.removeValue(idValue: self.items[indexPath.row].id)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            let item = self.items[indexPath.row]
+            self.removeItem(id: item.id)
             completion(true)
         }
         deleteAction.image = UIImage(systemName: "trash")
         deleteAction.backgroundColor = .red
         
         let detailButtonAction = UIContextualAction(style: .destructive, title: "Detail") { _, _, _ in
-            let vc = DetailsViewController()
+            let item = self.items[indexPath.row]
+            let vc = DetailsViewController(item: item)
+            vc.modalPresentationStyle = .popover
+            vc.delegate = self
             self.present(vc, animated: true)
         }
         detailButtonAction.image = UIImage(named: "disclore")
@@ -156,6 +265,12 @@ extension ListViewController: UITableViewDelegate {
 extension ListViewController: DetailsViewControllerDelegate {
     
     func handleAdd(item: ToDoItem) {
+        if fileCache.values.keys.contains(item.id) {
+            changeItem(item)
+        } else {
+            addItem(item)
+        }
+        
         fileCache.addValue(value: item)
         tableView.reloadData()
     }
