@@ -263,7 +263,7 @@ final class DetailsViewController: UIViewController {
             deadLine: datePicker.date,
             hexColor: choosedColor.flatMap { $0.hex }
         )
-        fileCache.addValue(value: todoItem)
+        fileCache.insert(item: todoItem)
         //fileCache.writeAllToFile(toFile: "items")
     }
     

@@ -4,6 +4,7 @@
 
 import UIKit
 import CocoaLumberjack
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,6 +31,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
+    
+    // MARK: - Core Data stack
+
+        lazy var persistentContainer: NSPersistentContainer = {
+            let container = NSPersistentContainer(name: "ToDoItem")
+            container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+                if let error = error as NSError? {
+                    fatalError("Unresolved error \(error), \(error.userInfo)")
+                } else {
+                    print("CD url - \(storeDescription.url?.absoluteString)")
+                }
+            })
+            return container
+        }()
+
+        // MARK: - Core Data Saving support
+
+        func saveContext () {
+            let context = persistentContainer.viewContext
+            if context.hasChanges {
+                do {
+                    try context.save()
+                } catch {
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                }
+            }
+        }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
