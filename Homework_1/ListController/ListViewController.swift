@@ -103,7 +103,7 @@ extension ListViewController {
                 self.revision = revision
                 
                 items.forEach {
-                    self.fileCache.addValue(value: $0)
+                    self.fileCache.insert(item: $0)
                 }
                 
                 DispatchQueue.main.async {
@@ -193,7 +193,7 @@ extension ListViewController: UITableViewDataSource {
                 fatalError("Error")
             }
             cell.accessoryType = .disclosureIndicator
-            cell.configure(item: Array(fileCache.values.values)[indexPath.item])
+            cell.configure(item: items[indexPath.row])
             cell.selectionStyle = .none
             return cell
         }
@@ -222,10 +222,11 @@ extension ListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            self.fileCache.removeValue(idValue: self.items[indexPath.row].id)
+            self.fileCache.removeValue(itemId: self.items[indexPath.row].id)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            let item = self.items[indexPath.row]
+            let item = self.items[indexPath.row - 1]
             self.removeItem(id: item.id)
+            self.fileCache.removeValue(itemId: item.id)
             completion(true)
         }
         deleteAction.image = UIImage(systemName: "trash")
@@ -267,11 +268,12 @@ extension ListViewController: DetailsViewControllerDelegate {
     func handleAdd(item: ToDoItem) {
         if fileCache.values.keys.contains(item.id) {
             changeItem(item)
+            fileCache.update(id: item.id, withItem: item)
         } else {
             addItem(item)
+            fileCache.insert(item: item)
         }
         
-        fileCache.addValue(value: item)
         tableView.reloadData()
     }
 }
